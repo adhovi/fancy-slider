@@ -16,7 +16,7 @@ const KEY = '15674931-a9d714b6e9d654524df198e00&q';
 //hide gallery-header
 imagesArea.style.display = 'none'
 // show images 
-const showImages = (query,data) => {
+const showImages = (query, data) => {
 
   if (data.total == 0) {
     spinnerToggle()
@@ -33,6 +33,7 @@ const showImages = (query,data) => {
     document.getElementById('no-match').appendChild(noMatchDiv)
     document.getElementById('images-section').style.display = 'none'
   } else {
+    spinnerToggle()
     const images = data.hits
     imagesArea.style.display = 'block';
     gallery.innerHTML = '';
@@ -44,7 +45,6 @@ const showImages = (query,data) => {
       div.innerHTML = ` <img class="img-fluid img-thumbnail img-height" onclick=selectItem(event,"${image.webformatURL}") src="${image.webformatURL}" alt="${image.tags}">`;
       gallery.appendChild(div)
     })
-    spinnerToggle()
   }
 }
 
@@ -52,7 +52,7 @@ const getImages = (query) => {
   spinnerToggle()
   fetch(`https://pixabay.com/api/?key=${KEY}=${query}&image_type=photo&pretty=true`)
     .then(response => response.json())
-    .then(data => showImages(query,data))
+    .then(data => showImages(query, data))
     .catch(err => console.log(err))
 }
 
@@ -137,6 +137,7 @@ const changeSlide = (index) => {
   items[index].style.display = "block"
 }
 
+//Search Button click event
 searchBtn.addEventListener('click', function () {
   document.querySelector('.main').style.display = 'none';
   clearInterval(timer);
@@ -147,6 +148,7 @@ searchBtn.addEventListener('click', function () {
   document.getElementById('search').value = ''
 })
 
+//Enter key press event
 document.getElementById('search').addEventListener('keypress', function (event) {
   if (event.key == 'Enter') {
     document.querySelector('.main').style.display = 'none';
@@ -159,15 +161,18 @@ document.getElementById('search').addEventListener('keypress', function (event) 
   }
 })
 
+//slider button click event
 sliderBtn.addEventListener('click', function () {
   createSlider()
 })
 
+//spinner show hide
 const spinnerToggle = () => {
   document.getElementById('spinner').classList.toggle('d-none')
   document.getElementById('images-section').classList.toggle('d-none')
 }
 
+//Back button of slider page
 document.getElementById('search-back').addEventListener('click', () => {
   sliderContainer.innerHTML = ''
   document.querySelector('.main').style.display = 'none'
